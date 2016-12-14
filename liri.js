@@ -50,6 +50,9 @@ function twitter_search() {
 }
 
 function spotify_search(search) {
+	if (search == null) {
+		search = "The Sign Ace of Base";
+	}
 	spotify.search({ type: 'track', query: search }, function(err, data) {
 		if (err) {
 			console.log('Error occurred: ' + err);
@@ -63,6 +66,31 @@ function spotify_search(search) {
 } 
 
 function omdb_search(search) {
+	if (search == null) {
+		search = "Mr Nobody";
+	}
+	var searchString = 'http://www.omdbapi.com/?';
+	var searchTemp = search.split(' ');
+	var searchTemp2 = '';
+	for (var i = 0; i < searchTemp.length-1; i++) {
+		searchTemp2 += searchTemp[i] + '+';
+	}
+	searchTemp2 += searchTemp[searchTemp.length-1];
+	searchString += 't=' + searchTemp2 + '&type=movie&y=&plot=short&tomatoes=true&r=json';
+	request(searchString, function (error, response, body) {
+		if (!error && response.statusCode == 200) {
+			console.log('Title: ' + JSON.parse(body).Title);
+			console.log('Year: ' + JSON.parse(body).Year);
+			console.log('IMDB Rating: ' + JSON.parse(body).imdbRating);
+			console.log('Country: ' + JSON.parse(body).Country);
+			console.log('Language: ' + JSON.parse(body).Language);
+			console.log('Plot: ' + JSON.parse(body).Plot);
+			console.log('Actors: ' + JSON.parse(body).Actors);
+			console.log('Rotten Tomatoes Rating: ' + JSON.parse(body).tomatoUserMeter);
+			console.log('Rotten Tomatoes URL: ' + JSON.parse(body).tomatoURL);
+
+		}
+	});
 
 }
 
