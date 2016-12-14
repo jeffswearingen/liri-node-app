@@ -39,12 +39,22 @@ function twitter_search() {
 		access_token_key: keyArray.access_token_key,
 		access_token_secret: keyArray.access_token_secret
 	});
-	console.log(client);
+	//console.log(client);
 	var params = {screen_name: 'developer_jeff'};
 	client.get('statuses/user_timeline', params, function(error, tweets, response) {
-		console.log(response);
+//		console.log(response);
 		if (!error) {
-			console.log(tweets.statuses.text);
+			var j;
+			if (tweets.length > 20) {
+				j = 20;
+			} else {
+				j = tweets.length;
+			}
+			tweets.reverse();
+			for (var i = 0; i < j; i++) {
+				console.log(tweets[i].text);
+				console.log(tweets[i].created_at + '\n');
+			}
 		}
 	});
 }
