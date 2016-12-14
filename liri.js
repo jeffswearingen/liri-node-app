@@ -3,32 +3,36 @@ var spotify = require('spotify');
 var request = require('request');
 var keys = require('./keys.js');
 var fs = require('fs');
-
+var file = 'random.txt';
+var log = 'log.txt';
 var keyArray = keys.twitterKeys;
 
 var params = process.argv;
 var command = params[2];
 var search = params[3];
-console.log('command ' + command);
-console.log('search ' + search);
+//console.log('command ' + command);
+//console.log('search ' + search);
+switchString(command, search);
 
-switch(command) {
-	case 'my-tweets':
-		console.log('my-tweets called');
-		twitter_search();
-		break;
-	case 'spotify-this-song':
-		spotify_search(search);
-		break;
-	case 'movie-this':
-		omdb_search(search);
-		break;
-	case 'do-what-it-says':
-
-		break;
-	default:
-		console.log('Invalid input');
-		break;
+function switchString(command, search) {
+	switch(command) {
+		case 'my-tweets':
+			console.log('my-tweets called');
+			twitter_search();
+			break;
+		case 'spotify-this-song':
+			spotify_search(search);
+			break;
+		case 'movie-this':
+			omdb_search(search);
+			break;
+		case 'do-what-it-says':
+			doIt();
+			break;
+		default:
+			console.log('Invalid input');
+			break;
+	}
 }
 
 function twitter_search() {
@@ -104,3 +108,13 @@ function omdb_search(search) {
 
 }
 
+function doIt() {
+	var fileArray = new Array();
+	fs.readFile(file, 'utf8', function(err, data) {
+		if (err) return console.log(err);
+		fileArray = data.split(',');
+		command = fileArray[0];
+		search = fileArray[1];
+		switchString(command, search);
+	})
+}
